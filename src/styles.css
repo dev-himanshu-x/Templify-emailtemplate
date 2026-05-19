@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@theme {
+  --font-sans: system-ui, -apple-system, sans-serif;
+}
+@layer base {
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+  * {
+    @apply border-gray-200;
+  }
+}
+:root {
+  --radius: 0.5rem;
+}
