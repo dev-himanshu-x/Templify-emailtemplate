@@ -1,4 +1,3 @@
-import { validateUrl } from '@/lib/utils';
 import { Terminal, Palette, ArrowLeft, Trash2 } from "lucide-react";
 import type { BuilderItem } from "@/types/builder";
 

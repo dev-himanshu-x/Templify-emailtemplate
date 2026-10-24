@@ -1,7 +1,7 @@
 import { cn, validateUrl } from "@/lib/utils";
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
-import { Type, Terminal, Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, Smile, Search, User } from "lucide-react";
+import { Type, Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, Smile, Search, User } from "lucide-react";
 import type { BuilderItem } from "@/types/builder";
 
 interface TextSettingsProps {

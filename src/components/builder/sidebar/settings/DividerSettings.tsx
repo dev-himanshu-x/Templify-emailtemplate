@@ -1,5 +1,4 @@
-import React from "react";
-import { Maximize, Palette, Minus } from "lucide-react";
+import { Palette, Minus } from "lucide-react";
 import type { BuilderItem } from "@/types/builder";
 
 interface DividerSettingsProps {

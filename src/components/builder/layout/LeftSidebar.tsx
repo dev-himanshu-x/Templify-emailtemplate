@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { BLOCK_CATEGORIES } from "@/config/blocks";
 import { TemplateBlock } from "./TemplateBlock";
+import { MyBlocks } from "./MyBlocks";
 export function LeftSidebar() {
 	return (
 		<div className="w-72 border-r border-gray-200 bg-white flex flex-col h-full overflow-hidden shrink-0 z-10">
@@ -10,6 +11,7 @@ export function LeftSidebar() {
 			</div>
 			<div className="flex-1 overflow-y-auto p-5">
 				<div className="space-y-8">
+					<MyBlocks />
 					{BLOCK_CATEGORIES.map((category) => (
 						<div key={category.id}>
 							<div className={cn("flex items-center gap-2 mb-4", category.colorClass)}>

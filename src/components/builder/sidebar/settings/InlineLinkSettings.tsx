@@ -1,7 +1,7 @@
 import { validateUrl } from '@/lib/utils';
 import React from "react";
 
-import { Link as LinkIcon, Palette, ArrowLeft, Trash2, ExternalLink } from "lucide-react";
+import { Link as LinkIcon, Palette, ArrowLeft, Trash2 } from "lucide-react";
 import type { BuilderItem } from "@/types/builder";
 
 interface InlineLinkSettingsProps {

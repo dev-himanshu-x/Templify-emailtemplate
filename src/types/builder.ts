@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { EmailSettings } from "@/config/email-settings";
 export type ItemType =
 	| "Heading"
 	| "Text"
@@ -60,6 +61,15 @@ export interface BuilderItemProps {
 	borderRadius: number;
 	paddingX: number;
 	paddingY: number;
+	/** Per-side overrides. When unset, paddingY / paddingX apply. */
+	/** Grid layouts: collapse columns into rows on narrow screens (default true). */
+	stackOnMobile?: boolean;
+	/** Grid layouts: space between columns in px. */
+	columnGap?: number;
+	paddingTop?: number;
+	paddingRight?: number;
+	paddingBottom?: number;
+	paddingLeft?: number;
 	imageUrl?: string;
 	imageAlt?: string;
 	imageWidth?: number;
@@ -100,10 +110,18 @@ export type ViewMode = "mobile" | "tablet" | "laptop";
 export interface BuilderContextType {
 	items: BuilderItem[];
 	selectedId: string | null;
-	selectedRecipientEmail: string;
-	setSelectedRecipientEmail: (email: string) => void;
 	viewMode: ViewMode;
 	setViewMode: (mode: ViewMode) => void;
+	settings: EmailSettings;
+	updateSettings: (patch: Partial<EmailSettings>) => void;
+	previewDark: boolean;
+	setPreviewDark: (dark: boolean) => void;
+	undo: () => void;
+	redo: () => void;
+	canUndo: boolean;
+	canRedo: boolean;
+	insertItems: (subtree: BuilderItem[]) => void;
+	replaceItems: (items: BuilderItem[], settings?: EmailSettings) => void;
 	addItem: (type: ItemType, extraProps?: Partial<BuilderItemProps>, parentId?: string, colIndex?: number, indexInCol?: number) => string;
 	removeItem: (id: string) => void;
 	selectItem: (id: string | null) => void;

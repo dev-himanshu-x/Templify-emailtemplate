@@ -1,9 +1,11 @@
-import { Section, Row, Column, Img, Link, Text, Tailwind } from "@react-email/components";
+import { paddingCss } from "@/lib/padding";
+import { Row, Column, Img, Link, Text, Tailwind } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
 import type { BuilderItem } from "@/types/builder";
 
 export function renderHeaderFooter(item: BuilderItem) {
 	const { props: p } = item;
-	const pad = `${p.paddingY || 16}px ${p.paddingX || 32}px`;
+	const pad = paddingCss(p, { y: 16, x: 32 });
 	switch (item.type) {
 		case "HeaderCentered":
 			return (

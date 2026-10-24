@@ -87,7 +87,7 @@ export const defaultPropsForType = (type: ItemType): BuilderItemProps => {
 		case "LayoutTwoCol":
 		case "LayoutHalf":
 		case "LayoutThird":
-			return { ...base, paddingY: 16 };
+			return { ...base, paddingY: 16, paddingX: 0 };
 		case "HeaderCentered":
 		case "HeaderSplit":
 			return {

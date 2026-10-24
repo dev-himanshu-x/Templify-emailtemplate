@@ -3,16 +3,17 @@ import { useDrag, useDrop } from "react-dnd";
 import { useBuilder } from "@/context/builder-context";
 import type { BuilderItem } from "@/types/builder";
 import { cn } from "@/lib/utils";
-import { contacts } from "@/lib/contacts";
 import { renderBlock } from "@/components/blocks";
 import { BuilderSlot } from "./BuilderSlot";
 import { BlockActions } from "./BlockActions";
+import { blockLibrary, collectSubtree } from "@/lib/library";
+import { toast } from "sonner";
 
 const BuilderBlockComponent = ({ item, index }: { item: BuilderItem; index: number }) => {
 	const { 
 		selectedId, selectItem, selectItemOnly, removeItem, 
 		moveItem, duplicateItem, addItem, updateItemProps, 
-		setEditingMode, selectedRecipientEmail 
+		setEditingMode, viewMode, items 
 	} = useBuilder();
 	
 	const isSelected = selectedId === item.id;
@@ -20,9 +21,15 @@ const BuilderBlockComponent = ({ item, index }: { item: BuilderItem; index: numb
 	const [isOverForSnippet, setIsOverForSnippet] = useState(false);
 	const ref = useRef<HTMLDivElement>(null);
 
-	const selectedRecipient = contacts.find(c => c.email === selectedRecipientEmail);
+	const handleSaveBlock = (id: string) => {
+		const name = window.prompt("Name this saved block", item.type.replace(/([a-z])([A-Z])/g, "$1 $2"))?.trim();
+		if (!name) return;
+		const saved = blockLibrary.add({ id: crypto.randomUUID(), name, updatedAt: Date.now(), items: collectSubtree(items, id) });
+		if (saved) toast.success(`Saved "${name}" to My blocks`);
+		else toast.error("Couldn't save. Browser storage is full or blocked.");
+	};
 
-	const [{ isDragging }, drag, preview] = useDrag({
+	const [{ isDragging }, drag] = useDrag({
 		type: "BUILDER_BLOCK",
 		item: { id: item.id },
 		collect: (monitor) => ({ isDragging: monitor.isDragging() })
@@ -90,11 +97,13 @@ const BuilderBlockComponent = ({ item, index }: { item: BuilderItem; index: numb
 				isDragging ? "opacity-40 grayscale scale-[0.98] blur-[1px]" : "opacity-100",
 				isSelected ? "ring-2 ring-blue-500 z-40" : hovered || isOverForSnippet ? "ring-1 ring-blue-200 z-20" : "z-10",
 				isOverCurrent && draggedType === "TEMPLATE_BLOCK" ? "ring-2 ring-blue-400 z-50" : "",
-				isOverForSnippet ? "bg-blue-50/30" : ""
+				isOverForSnippet ? "bg-blue-50/30" : "",
+				// Mirror the email's mobile media query, which can't fire inside the editor.
+				viewMode === "mobile" && "[&_.stack-col]:!block [&_.stack-col]:!w-full [&_.stack-col]:!px-0 [&_.stack-col]:!pb-3"
 			)}
 		>
 			{(isSelected || hovered) && !isDragging && (
-				<BlockActions item={item} onDuplicate={duplicateItem} onRemove={removeItem} />
+				<BlockActions item={item} onDuplicate={duplicateItem} onRemove={removeItem} onSave={handleSaveBlock} />
 			)}
 			<div className="bg-white rounded-none overflow-hidden relative">
 				{renderBlock(
@@ -106,8 +115,7 @@ const BuilderBlockComponent = ({ item, index }: { item: BuilderItem; index: numb
 							type: type === 'inline-link' ? 'inline-link' : 'inline-snippet',
 							[type === 'inline-link' ? 'link' : 'snippet']: value 
 						} as any);
-					}, 
-					selectedRecipient?.name
+					}
 				)}
 			</div>
 		</div>

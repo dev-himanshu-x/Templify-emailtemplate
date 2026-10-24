@@ -36,5 +36,5 @@ export function renderBlock(
 		return renderHeaderFooter(item);
 	}
 
-	return renderLayoutBlock({ type, renderSlot });
+	return renderLayoutBlock({ item, renderSlot });
 }

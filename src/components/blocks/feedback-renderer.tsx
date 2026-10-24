@@ -1,9 +1,11 @@
-import { Section, Row, Column, Text, Heading, Button, Hr } from "@react-email/components";
+import { paddingCss } from "@/lib/padding";
+import { Row, Column, Text, Heading, Button, Hr } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
 import type { BuilderItem } from "@/types/builder";
 
 export function renderFeedback(item: BuilderItem) {
 	const { props: p } = item;
-	const pad = `${p.paddingY || 0}px 0`;
+	const pad = paddingCss(p, { y: 0, x: 0 }, { inheritX: false });
 	
 	switch (item.type) {
 		case "FeedbackSurvey":

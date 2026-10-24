@@ -1,4 +1,3 @@
-import { validateUrl } from '@/lib/utils';
 import { Star } from "lucide-react";
 import type { BuilderItem } from "@/types/builder";
 interface FeedbackSettingsProps {

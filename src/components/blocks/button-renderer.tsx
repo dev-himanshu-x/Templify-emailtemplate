@@ -1,11 +1,14 @@
 import React from "react";
-import { Section, Button, Row, Column, Text, Img, Link, Tailwind } from "@react-email/components";
+import { paddingCss } from "@/lib/padding";
+import { Button, Row, Column, Text, Img, Link, Tailwind } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
 import type { BuilderItem } from "@/types/builder";
 import { cn } from "@/lib/utils";
 
 export function renderButton(item: BuilderItem) {
 	const { props: p } = item;
-	const pad = `${p.paddingY || 12}px 0`;
+	// Outer spacing around the button. paddingX / paddingY size the button itself, so only the per-side values move it horizontally.
+	const pad = paddingCss({ ...p, paddingY: p.paddingY || 12 }, { y: 12, x: 0 }, { inheritX: false });
 	const innerPadding = `${p.paddingY || 14}px ${p.paddingX || 32}px`;
 	const fontSize = p.fontSize || 16;
 	const align = (p.align || 'center') as any;

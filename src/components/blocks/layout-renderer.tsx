@@ -1,61 +1,56 @@
 import React from "react";
-import { Section, Row, Column, Tailwind } from "@react-email/components";
-import type { ItemType } from "@/types/builder";
+import { Row, Column } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
+import { paddingCss } from "@/lib/padding";
+import type { BuilderItem } from "@/types/builder";
 
 interface LayoutRendererProps {
-	type: ItemType;
+	item: BuilderItem;
 	renderSlot?: (colIndex: number) => React.ReactElement | React.ReactNode;
 }
 
-export function renderLayoutBlock({ type, renderSlot }: LayoutRendererProps) {
-	if (type === 'LayoutHalf') {
+/** Column widths (in %) for each grid layout. */
+const COLUMN_WIDTHS: Record<string, number[]> = {
+	LayoutHalf: [50, 50],
+	LayoutTwoCol: [33.33, 66.67],
+	LayoutThird: [33.33, 33.33, 33.34],
+};
+
+export const DEFAULT_COLUMN_GAP = 24;
+
+export function renderLayoutBlock({ item, renderSlot }: LayoutRendererProps) {
+	const { type, props: p } = item;
+	const background = p.bgColor && p.bgColor !== "transparent" ? p.bgColor : undefined;
+	const widths = COLUMN_WIDTHS[type];
+
+	if (widths) {
+		const gap = p.columnGap ?? DEFAULT_COLUMN_GAP;
+		// `stack-col` is collapsed to full-width rows by a media query in EmailTemplate.
+		const stackClass = p.stackOnMobile === false ? undefined : "stack-col";
 		return (
-			<Tailwind>
-				<Section className="py-3 px-0">
-					<Row>
-						<Column className="w-1/2 pr-3">{renderSlot?.(0)}</Column>
-						<Column className="w-1/2 pl-3">{renderSlot?.(1)}</Column>
-					</Row>
-				</Section>
-			</Tailwind>
+			<Section style={{ padding: paddingCss(p, { y: 12, x: 0 }), backgroundColor: background }}>
+				<Row>
+					{widths.map((width, i) => (
+						<Column
+							key={i}
+							className={stackClass}
+							style={{
+								width: `${width}%`,
+								verticalAlign: "top",
+								paddingLeft: i === 0 ? 0 : gap / 2,
+								paddingRight: i === widths.length - 1 ? 0 : gap / 2,
+							}}
+						>
+							{renderSlot?.(i)}
+						</Column>
+					))}
+				</Row>
+			</Section>
 		);
 	}
 
-	if (type === 'LayoutTwoCol') {
-		return (
-			<Tailwind>
-				<Section className="py-3 px-0">
-					<Row>
-						<Column className="w-[33.33%] pr-3">{renderSlot?.(0)}</Column>
-						<Column className="w-[66.66%] pl-3">{renderSlot?.(1)}</Column>
-					</Row>
-				</Section>
-			</Tailwind>
-		);
-	}
-
-	if (type === 'LayoutThird') {
-		return (
-			<Tailwind>
-				<Section className="py-3 px-0">
-					<Row>
-						<Column className="w-[33.33%] pr-2">{renderSlot?.(0)}</Column>
-						<Column className="w-[33.33%] px-2">{renderSlot?.(1)}</Column>
-						<Column className="w-[33.33%] pl-2">{renderSlot?.(2)}</Column>
-					</Row>
-				</Section>
-			</Tailwind>
-		);
-	}
-
-	if (type === 'Container' || type === 'LayoutSection') {
-		return (
-			<Tailwind>
-				<Section className="p-4">
-					{renderSlot?.(0)}
-				</Section>
-			</Tailwind>
-		);
+	if (type === "Container" || type === "LayoutSection") {
+		return <Section style={{ padding: paddingCss(p, { y: 16, x: 16 }), backgroundColor: background }}>{renderSlot?.(0)}</Section>;
 	}
 
 	return null;

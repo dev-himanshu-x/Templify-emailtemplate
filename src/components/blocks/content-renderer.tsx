@@ -1,11 +1,12 @@
-import { Text, Heading, Img, Link, Hr, Section, Row, Column, Tailwind } from "@react-email/components";
+import { Text, Heading, Img, Link, Hr, Row, Column, Tailwind } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
 import type { BuilderItem } from "@/types/builder";
-import React from "react";
+import { paddingCss } from "@/lib/padding";
 import { cn } from "@/lib/utils";
 
 export function renderContent(item: BuilderItem, onInlineClick?: (type: 'inline-link' | 'inline-snippet', value: string) => void, recipientName?: string) {
 	const { props: p } = item;
-	const padStyle = { padding: `${p.paddingY || 0}px ${p.paddingX || 0}px` };
+	const padStyle = { padding: paddingCss(p, { y: 0, x: 0 }) };
 	
 	const commonStyles = {
 		color: {
@@ -166,7 +167,7 @@ export function renderContent(item: BuilderItem, onInlineClick?: (type: 'inline-
 				<Section style={padStyle}>
 					<Img
 						src={p.imageUrl}
-						alt={p.text || "Image"}
+						alt={p.imageAlt ?? p.text ?? ""}
 						width="100%"
 						className="block h-auto"
 						style={{ 

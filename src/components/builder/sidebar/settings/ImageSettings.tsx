@@ -66,6 +66,18 @@ export function ImageSettings({ selectedItem, updateProp }: ImageSettingsProps) 
               />
             </div>
           </div>
+          {selectedItem.type === 'Img' && (
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1">Alt text</label>
+              <input
+                type="text"
+                value={selectedItem.props.imageAlt || ''}
+                onChange={(e) => updateProp('imageAlt', e.target.value)}
+                placeholder="Describe the image for screen readers and blocked images"
+                className="w-full bg-gray-50 border border-gray-100 rounded-lg p-2.5 text-xs text-gray-900 focus:outline-none shadow-inner"
+              />
+            </div>
+          )}
         </div>
       </section>
 

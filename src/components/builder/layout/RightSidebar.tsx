@@ -1,5 +1,5 @@
 import { useBuilder } from "@/context/builder-context";
-import { Settings2, X, Image as ImageIcon } from "lucide-react";
+import { X } from "lucide-react";
 
 import { TextSettings } from "../sidebar/settings/TextSettings";
 import { ButtonSettings } from "../sidebar/settings/ButtonSettings";
@@ -12,6 +12,9 @@ import { CodeSettings } from "../sidebar/settings/CodeSettings";
 import { InlineSnippetSettings } from "../sidebar/settings/InlineSnippetSettings";
 
 
+import { LayoutSettings } from "../sidebar/settings/LayoutSettings";
+import { SpacingSettings } from "../sidebar/settings/SpacingSettings";
+import { EmailSettingsPanel } from "../sidebar/settings/EmailSettingsPanel";
 import { InlineLinkSettings } from "../sidebar/settings/InlineLinkSettings";
 import { BannerSettings } from "../sidebar/settings/BannerSettings";
 import { DividerSettings } from "../sidebar/settings/DividerSettings";
@@ -19,20 +22,11 @@ import { DividerSettings } from "../sidebar/settings/DividerSettings";
 export function RightSidebar() {
 	const { items, selectedId, selectItem, updateItemProps, editingMode, setEditingMode } = useBuilder();
 	const selectedItem = items.find((i) => i.id === selectedId);
-	const isLayout = selectedItem?.type.startsWith('Layout');
 
-	if (!selectedId || !selectedItem || isLayout) {
+	if (!selectedId || !selectedItem) {
 		return (
-			<div className="w-80 border-l border-gray-200 bg-white flex flex-col h-full overflow-hidden shrink-0 z-10 items-center justify-center p-8 text-center">
-				<div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 mb-4">
-					<Settings2 size={24} />
-				</div>
-				<h3 className="text-sm font-bold text-gray-900">{isLayout ? "Layout Selected" : "No selection"}</h3>
-				<p className="text-xs text-gray-400 mt-1 leading-relaxed">
-					{isLayout 
-						? "Grid layouts cannot be edited directly. Drop components into the columns to start building." 
-						: "Select any element on the canvas to edit its properties"}
-				</p>
+			<div className="w-80 border-l border-gray-200 bg-white flex flex-col h-full overflow-hidden shrink-0 z-10">
+				<EmailSettingsPanel />
 			</div>
 		);
 	}
@@ -101,9 +95,14 @@ export function RightSidebar() {
 				{(type === 'Banner') && (
 					<BannerSettings selectedItem={selectedItem} updateProp={updateProp} />
 				)}
+				{(type.startsWith('Layout') || type === 'Container') && (
+					<LayoutSettings selectedItem={selectedItem} updateProp={updateProp} />
+				)}
 				{(type === 'Hr' || type === 'Divider') && (
 					<DividerSettings selectedItem={selectedItem} updateProp={updateProp} />
 				)}
+
+				<SpacingSettings selectedItem={selectedItem} updateProp={updateProp} />
 			</div>
 		);
 	};

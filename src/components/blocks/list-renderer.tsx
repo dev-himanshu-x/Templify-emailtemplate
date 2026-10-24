@@ -1,11 +1,12 @@
-import { Section, Row, Column, Text, Img, Tailwind } from "@react-email/components";
+import { paddingCss } from "@/lib/padding";
+import { Row, Column, Text, Img, Tailwind } from "@react-email/components";
+import { PaddedSection as Section } from "./padded-section";
 import type { BuilderItem } from "@/types/builder";
 import { cn } from "@/lib/utils";
 
 export function renderList(item: BuilderItem) {
 	const { props: p } = item;
-	const paddingY = p.paddingY || 40;
-	const paddingX = p.paddingX || 32;
+	const padding = paddingCss(p, { y: 40, x: 32 });
 	const themeColor = p.bgColor || '#000000';
 	const titleColor = p.titleColor || p.color || '#111827';
 	const descColor = p.descriptionColor || '#6b7280';
@@ -19,7 +20,7 @@ export function renderList(item: BuilderItem) {
 					<Section 
 						style={{ 
 							backgroundColor: '#ffffff',
-							padding: `${paddingY}px ${paddingX}px`
+							padding
 						}}
 						className="w-full"
 					>

@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiSendersRouteImport } from './routes/api/senders'
+import { Route as ApiSendEmailRouteImport } from './routes/api/send-email'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSendersRoute = ApiSendersRouteImport.update({
+  id: '/api/senders',
+  path: '/api/senders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSendEmailRoute = ApiSendEmailRouteImport.update({
+  id: '/api/send-email',
+  path: '/api/send-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/send-email': typeof ApiSendEmailRoute
+  '/api/senders': typeof ApiSendersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/send-email': typeof ApiSendEmailRoute
+  '/api/senders': typeof ApiSendersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/send-email': typeof ApiSendEmailRoute
+  '/api/senders': typeof ApiSendersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/send-email' | '/api/senders'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/send-email' | '/api/senders'
+  id: '__root__' | '/' | '/api/send-email' | '/api/senders'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiSendEmailRoute: typeof ApiSendEmailRoute
+  ApiSendersRoute: typeof ApiSendersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/senders': {
+      id: '/api/senders'
+      path: '/api/senders'
+      fullPath: '/api/senders'
+      preLoaderRoute: typeof ApiSendersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/send-email': {
+      id: '/api/send-email'
+      path: '/api/send-email'
+      fullPath: '/api/send-email'
+      preLoaderRoute: typeof ApiSendEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiSendEmailRoute: ApiSendEmailRoute,
+  ApiSendersRoute: ApiSendersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
