@@ -10,22 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiSendersRouteImport } from './routes/api/senders'
 import { Route as ApiSendEmailRouteImport } from './routes/api/send-email'
+import { Route as ApiSendersRouteImport } from './routes/api/senders'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSendersRoute = ApiSendersRouteImport.update({
-  id: '/api/senders',
-  path: '/api/senders',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiSendEmailRoute = ApiSendEmailRouteImport.update({
   id: '/api/send-email',
   path: '/api/send-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSendersRoute = ApiSendersRouteImport.update({
+  id: '/api/senders',
+  path: '/api/senders',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -68,18 +68,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/senders': {
-      id: '/api/senders'
-      path: '/api/senders'
-      fullPath: '/api/senders'
-      preLoaderRoute: typeof ApiSendersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/send-email': {
       id: '/api/send-email'
       path: '/api/send-email'
       fullPath: '/api/send-email'
       preLoaderRoute: typeof ApiSendEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/senders': {
+      id: '/api/senders'
+      path: '/api/senders'
+      fullPath: '/api/senders'
+      preLoaderRoute: typeof ApiSendersRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
