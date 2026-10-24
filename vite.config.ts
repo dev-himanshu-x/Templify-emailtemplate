@@ -1,5 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { nitro } from "nitro/vite";
 import { defineConfig, loadEnv } from "vite";
 import path from "path";
 
@@ -14,7 +15,7 @@ const config = defineConfig(({ mode }) => {
 				"@": path.resolve(__dirname, "./src"),
 			},
 		},
-		plugins: [tailwindcss(), tanstackStart()],
+		plugins: [tailwindcss(), tanstackStart(), nitro()],
 	};
 });
 
