@@ -1,6 +1,7 @@
 import React from "react";
 
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Analytics } from "@vercel/analytics/react";
 import Layout from "@/components/builder/layout";
 import appCss from "../styles.css?url";
 export const Route = createRootRoute({
@@ -46,6 +47,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body className="m-0 p-0 overflow-hidden">
 				<Layout>{children}</Layout>
+				<Analytics />
 				<Scripts />
 			</body>
 		</html>
